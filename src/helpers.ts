@@ -1,10 +1,22 @@
 import url from 'url';
-import { omit } from 'lodash';
 import { NextRouter } from 'next/router';
 import { Query, Route, CreateMockRouterOptions } from './types';
 import { EventEmitter } from 'events';
 
 const noop = (): void => undefined;
+
+function omit(obj: Record<string, string>, properties: string[]) {
+  const keys = Object.keys(obj);
+  const res: Record<string, string> = {};
+  for (var i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const val = obj[key];
+    if (properties.indexOf(key) === -1) {
+      res[key] = val;
+    }
+  }
+  return res;
+};
 
 /**
  * Get all of the matches within a string
@@ -97,7 +109,7 @@ export async function replaceRoute(router: NextRouter, route: Route): Promise<bo
  */
 async function navigate(router: NextRouter, route: Route, type: 'push' | 'replace'): Promise<boolean> {
   const { pathname, query } = route;
-  const queryWithoutParams = omit(query, findParams(pathname));
+  const queryWithoutParams = omit(query || {}, findParams(pathname));
   const shouldScroll = pathname.indexOf('#') < 0;
   const success = await router[type](
     {

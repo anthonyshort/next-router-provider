@@ -45,7 +45,5 @@
     "tslib": "^1.11.1",
     "typescript": "^3.8.3"
   },
-  "dependencies": {
-    "lodash": "^4.17.15"
-  }
+  "dependencies": {}
 }
