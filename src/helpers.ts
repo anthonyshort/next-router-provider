@@ -210,7 +210,7 @@ export function createLink(
   isActive: boolean;
   push: () => ReturnType<typeof pushRoute>;
   replace: () => ReturnType<typeof replaceRoute>;
-  onClick: (e: MouseEvent) => void;
+  onClick: ClickHandler;
   href: string;
 } {
   return {
