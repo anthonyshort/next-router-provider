@@ -217,7 +217,7 @@ export function createLink(
     isActive: router.route.startsWith(route.pathname),
     push: () => pushRoute(router, route),
     replace: () => replaceRoute(router, route),
-    onClick: () => createClickHandler(router, route),
+    onClick: createClickHandler(router, route),
     href: routeToString(route),
   };
 }
