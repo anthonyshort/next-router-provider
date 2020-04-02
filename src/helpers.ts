@@ -16,7 +16,7 @@ function omit(obj: Record<string, string>, properties: string[]) {
     }
   }
   return res;
-};
+}
 
 /**
  * Get all of the matches within a string
@@ -24,7 +24,11 @@ function omit(obj: Record<string, string>, properties: string[]) {
  * @param str A string to find the matches in
  * @param matches Internal argument to build the matches
  */
-function findMatches(regex: RegExp, str: string, matches: string[] = []): string[] {
+function findMatches(
+  regex: RegExp,
+  str: string,
+  matches: string[] = []
+): string[] {
   const res = regex.exec(str);
   const match = res && (res[1] as string);
   if (match) {
@@ -59,7 +63,7 @@ export function removeParams(pathname: string, query: Query): Query {
 export function replaceParams(str: string, params?: Query): string {
   if (!params) return str;
   let pathname = str;
-  Object.keys(params).forEach((key) => {
+  Object.keys(params).forEach(key => {
     const value = params[key];
     pathname = pathname.replace(`[${key}]`, value);
   });
@@ -81,7 +85,10 @@ export function replaceParams(str: string, params?: Query): string {
  * @param router The Next router from useRouter
  * @param route The route information
  */
-export async function pushRoute(router: NextRouter, route: Route): Promise<boolean> {
+export async function pushRoute(
+  router: NextRouter,
+  route: Route
+): Promise<boolean> {
   return navigate(router, route, 'push');
 }
 
@@ -100,14 +107,21 @@ export async function pushRoute(router: NextRouter, route: Route): Promise<boole
  * @param router The Next router from useRouter
  * @param route The route information
  */
-export async function replaceRoute(router: NextRouter, route: Route): Promise<boolean> {
+export async function replaceRoute(
+  router: NextRouter,
+  route: Route
+): Promise<boolean> {
   return navigate(router, route, 'replace');
 }
 
 /**
  * Calls router.push or router.replace
  */
-async function navigate(router: NextRouter, route: Route, type: 'push' | 'replace'): Promise<boolean> {
+async function navigate(
+  router: NextRouter,
+  route: Route,
+  type: 'push' | 'replace'
+): Promise<boolean> {
   const { pathname, query } = route;
   const queryWithoutParams = omit(query || {}, findParams(pathname));
   const shouldScroll = pathname.indexOf('#') < 0;
@@ -119,11 +133,11 @@ async function navigate(router: NextRouter, route: Route, type: 'push' | 'replac
     {
       pathname: replaceParams(pathname, query),
       query: queryWithoutParams,
-    },
+    }
   );
   if (success && shouldScroll) {
-    window.scrollTo(0, 0)
-    document.body.focus()
+    window.scrollTo(0, 0);
+    document.body.focus();
   }
   return success;
 }
@@ -171,12 +185,15 @@ export function wantsNewTab(e: any): boolean {
 
 export type ClickHandler = (e: MouseEvent) => void;
 
-export function createClickHandler(router: NextRouter, route: Route): ClickHandler {
+export function createClickHandler(
+  router: NextRouter,
+  route: Route
+): ClickHandler {
   return (e: MouseEvent) => {
     if (wantsNewTab(e)) return;
     e.preventDefault();
     pushRoute(router, route);
-  }
+  };
 }
 
 /**
@@ -186,7 +203,7 @@ export function createClickHandler(router: NextRouter, route: Route): ClickHandl
  */
 export function createLink(
   router: NextRouter,
-  route: Route,
+  route: Route
 ): {
   isActive: boolean;
   push: () => ReturnType<typeof pushRoute>;
@@ -199,8 +216,8 @@ export function createLink(
     push: () => pushRoute(router, route),
     replace: () => replaceRoute(router, route),
     onClick: () => createClickHandler(router, route),
-    href: routeToString(route)
-  }
+    href: routeToString(route),
+  };
 }
 
 /**

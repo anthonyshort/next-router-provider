@@ -16,5 +16,7 @@ export function MockRouterContext(props: Props): JSX.Element {
     pathname,
     query,
   });
-  return <RouterContext.Provider value={router}>{children}</RouterContext.Provider>;
+  return (
+    <RouterContext.Provider value={router}>{children}</RouterContext.Provider>
+  );
 }

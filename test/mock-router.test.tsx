@@ -10,7 +10,9 @@ describe('createMockRouter', () => {
       },
     });
 
-    expect(router.asPath).toBe('/admin/producer-dashboard/requests/1?hash=12345');
+    expect(router.asPath).toBe(
+      '/admin/producer-dashboard/requests/1?hash=12345'
+    );
     expect(router.route).toBe('/admin/producer-dashboard/requests/[uuid]');
     expect(router.query).toEqual({
       uuid: '1',
@@ -55,7 +57,7 @@ describe('createMockRouter', () => {
         query: {
           id: '1',
         },
-      },
+      }
     );
 
     expect(spy).toHaveBeenCalledWith(
@@ -70,7 +72,7 @@ describe('createMockRouter', () => {
         query: {
           id: '1',
         },
-      },
+      }
     );
   });
 });
