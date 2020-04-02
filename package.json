@@ -36,6 +36,7 @@
     "@types/lodash": "^4.14.149",
     "@types/react": "^16.9.31",
     "@types/react-dom": "^16.9.6",
+    "babel-jest": "^25.2.4",
     "husky": "^4.2.3",
     "next": ">=9.1",
     "react": ">=16.8",
