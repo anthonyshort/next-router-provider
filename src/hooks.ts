@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { NextRouter } from 'next/router';
-import { Route } from 'types';
+import { Route } from './types';
 import { RouterContext } from './contexts/router';
 import {
   pushRoute,

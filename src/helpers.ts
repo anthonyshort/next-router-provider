@@ -1,7 +1,7 @@
 import url from 'url';
 import { omit } from 'lodash';
 import { NextRouter } from 'next/router';
-import { Query, Route, CreateMockRouterOptions } from 'types';
+import { Query, Route, CreateMockRouterOptions } from './types';
 import { EventEmitter } from 'events';
 
 const noop = (): void => undefined;
