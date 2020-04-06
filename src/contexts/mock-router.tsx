@@ -10,7 +10,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export function MockRouterContext(props: Props): JSX.Element {
+export function MockRouterProvider(props: Props): JSX.Element {
   const { pathname = '/', query, children } = props;
   const router = createMockRouter({
     pathname,
