@@ -8,6 +8,7 @@ import {
   createLink,
   routeToString,
   createClickHandler,
+  findParams,
 } from './helpers';
 
 export interface RouterHook {
@@ -57,18 +58,37 @@ export function useRouter(): RouterHook {
  * Get a URL param or query value.
  * @param key Query param name
  */
-export function useQuery<T>(key: string): T {
+export function useQuery<T = string | undefined>(key: string): T {
   const { router } = useRouter();
   return getQuery<T>(router, key);
+}
+
+/**
+ * Get a route parameter. This will throw if the route parameter doesn't exist.
+ * @param key
+ */
+export function useRouteParam(key: string): string {
+  const { router } = useRouter();
+  const params = findParams(router.route);
+  if (!params.includes(key)) {
+    throw new Error(`The current page route does not contain the parameter "${key}". Did you mispell it?`);
+  }
+  const value = getQuery<T | undefined>(router, key);
+  if (!value) {
+    throw new Error(`Route parameter "${key}" doesn’t exist`);
+  }
+  return value;
 }
 
 /**
  * Prefetch the JS bundles for a route
  * @param route
  */
-export function usePrefetch(route: Route) {
+export function usePrefetch(route?: Route) {
   const { router } = useRouter();
   useEffect(() => {
-    router.prefetch(route.pathname);
-  }, [route.pathname]);
+    if (route) {
+      router.prefetch(route.pathname);
+    }
+  }, [route && route.pathname]);
 }

@@ -25,20 +25,22 @@ function MyComponent() {
 }
 ```
 
-## Table of contents
+---
 
-- [Table of contents](#table-of-contents)
 - [Install](#install)
 - [Why?](#why)
 - [Setup](#setup)
 - [Usage](#usage)
 - [API](#api)
   - [`Route`](#route)
-  - [RouteLink](#routelink)
+  - [`RouteLink`](#routelink)
   - [`useRouter(): RouterHook`](#userouter-routerhook)
     - [`RouterHook`](#routerhook)
   - [`useQuery<T>(key: string): T`](#usequerytkey-string-t)
-  - [`usePrefetch(pathname: string): void`](#useprefetchpathname-string-void)
+  - [`useRouteParam(key: string): string`](#userouteparamkey-string-string)
+  - [`usePrefetch(route?: Route): void`](#useprefetchroute-route-void)
+
+---
 
 ## Install
 
@@ -131,11 +133,93 @@ export default class NextApp extends App {
 
 ## Usage
 
-Once you've setup the provider you can use three hooks in your components:
+Once you've setup the provider you can use hooks in your components:
 
 - `useRouter`: A replacement for the `useRouter` from `next/router`.
-- `useQuery`: Get a query/param from the URL.
+- `useQuery`: Get a query param from the URL.
+- `useRouteParam`: Get a route param from the URL. This will throw if it doesn’t exist.
 - `usePrefetch`: Prefetch the assets for a route.
+
+In your components you can access the router. Here's a (mostly pointless) example that shows a few different ways to use the router hook.
+
+```tsx
+import { useRouter, usePrefetch } from 'next-router-provider';
+
+const homeRoute = {
+  pathname: '/'
+}
+
+const 4 = (id: string) => ({
+  pathname: '/posts/[id]',
+  query: {
+    id
+  }
+})
+
+function MyComponent() {
+  const {
+    pushRoute,
+    replaceRoute,
+    createLink,
+    createHref,
+    isRouteActive,
+    createClickHandler,
+  } = useRouter();
+
+  // Get query parameter values. These can be typed but will default to Maybe<string>. This is useful when you know a query param will exist because it's part of the route.
+  const searchFilter = useQuery('filter');
+
+  // This will get the value of the route parameter. This will throw if the route param doesn't exist.
+  const postId = useRouteParam('id');
+
+  // Create a RouteLink. It has a lot of the same methods as the router but will point to a specific route.
+  const homeLink = createLink(homeRoute);
+
+  // Prefetch this bundle. If you have your own
+  // Link component, you might put this in there and enable it using a prop.
+  usePrefetch({
+    pathname: '/'
+  });
+
+  // If there was a form submission...
+  function onSubmit() {
+    // ...save the form
+    // Then navigate manually
+    pushRoute({
+      pathname: '/success'
+    });
+  }
+
+  return (
+    <nav>
+      <a
+        data-active={homeLink.isActive}
+        href={homeLink.href}
+        onClick={homeLink.onClick}
+      >
+        Home
+      </a>
+      {posts.map(post => {
+        // If you wanted to do it manually
+        const route = postsRoute(post.id);
+        const href = createHref(route);
+        const isActive = isRouteActive(route);
+        const onClick = createClickHandler(route);
+
+        return (
+        <a
+          data-active={isActive}
+          href={href}
+          onClick={onClick}
+        >
+          {post.title}
+        </button>
+      )
+      })}
+    </nav>
+  );
+}
+```
 
 ## API
 
@@ -162,7 +246,7 @@ pushRoute({
 });
 ```
 
-### RouteLink
+### `RouteLink`
 
 Returned by `createLink`. This can be used on anchors and buttons.
 
@@ -199,10 +283,25 @@ Access a query string value and set it's type.
 const id = useQuery<string>('id');
 ```
 
-### `usePrefetch(pathname: string): void`
+### `useRouteParam(key: string): string`
+
+This will get the value of the route parameter. Unlike accessing the query in the built-in router this doesn't distinguish between route params and query params. This hook will look at the current route to make sure the parameter even exists and will always return a string.
+
+```ts
+const postId = useRouteParam('id');
+```
+
+### `usePrefetch(route?: Route): void`
 
 Calls `route.prefetch` on the route.
 
 ```ts
-usePrefetch('/posts/[id]');
+usePrefetch({
+  pathname: '/posts/[id]',
+  query: {
+    id: '10',
+  },
+});
 ```
+
+Passing `undefined` or `null` will skip the effect.
