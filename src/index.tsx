@@ -1,3 +1,4 @@
+export { createMockRouter } from './helpers';
 export { Route, Query } from './types';
 export {
   useRouter,

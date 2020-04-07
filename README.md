@@ -31,6 +31,7 @@ function MyComponent() {
 - [Why?](#why)
 - [Setup](#setup)
 - [Usage](#usage)
+  - [Mocking](#mocking)
 - [API](#api)
   - [`Route`](#route)
   - [`RouteLink`](#routelink)
@@ -219,6 +220,56 @@ function MyComponent() {
     </nav>
   );
 }
+```
+
+### Mocking
+
+One of the benefits of using providers like this is that we can easily mock the router in tests.
+
+If you don't want to run assertions on route changes, you can simply use the `MockRouterProvider`:
+
+```tsx
+import { MockRouterProvider } from 'next-router-provider';
+
+render(
+  <MockRouterProvider pathname="/posts/[id]" query={{ hello: 'world' }}>
+    <MyComponent />
+  </MockRouterProvider>
+);
+```
+
+Now whenever any of the hooks are used within these components they'll be using a fake router.
+
+If you want to assert that route changes are happening you can use the context directly and create your own router.
+
+```tsx
+import { RouterContext, createMockRouter } from 'next-router-provider';
+
+describe('Submitting the form', () => {
+  it('should redirect after submit', () => {
+    const router = createMockRouter({
+      pathname: '/posts/new',
+    });
+
+    jest.spyOn(router, 'push');
+
+    render(
+      <RouterContext.Provider value={router}>
+        <PostCreator />
+      </RouterContext.Provider>
+    );
+
+    const submitButton = await findByText('Create new post');
+
+    act(() => {
+      fireEvent.click(submitButton);
+    });
+
+    expect(router.push).toHaveBeenCalledWith({
+      pathname: '/post/success',
+    });
+  });
+});
 ```
 
 ## API
