@@ -1,16 +1,5 @@
 # next-router-provider
 
-- [Install](#install)
-- [Why?](#why)
-- [Setup](#setup)
-- [Usage](#usage)
-  - [`Route`](#route)
-  - [RouteLink](#routelink)
-  - [`useRouter(): RouterHook`](#userouter-routerhook)
-    - [`RouterHook`](#routerhook)
-  - [`useQuery<T>(key: string): T`](#usequerytkey-string-t)
-  - [`usePrefetch(pathname: string): void`](#useprefetchpathname-string-void)
-
 Wrapper around the Next.js router that allows for mocking and makes it easier to use routes with parameters.
 
 - Easily mock the Next router in tests and in Storybook
@@ -35,6 +24,19 @@ function MyComponent() {
   return <button onClick={onClick}>Navigate</button>;
 }
 ```
+
+# Table of contents
+
+- [Install](#install)
+- [Why?](#why)
+- [Setup](#setup)
+- [Usage](#usage)
+  - [`Route`](#route)
+  - [RouteLink](#routelink)
+  - [`useRouter(): RouterHook`](#userouter-routerhook)
+    - [`RouterHook`](#routerhook)
+  - [`useQuery<T>(key: string): T`](#usequerytkey-string-t)
+  - [`usePrefetch(pathname: string): void`](#useprefetchpathname-string-void)
 
 ## Install
 
