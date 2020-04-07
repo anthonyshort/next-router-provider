@@ -1,5 +1,16 @@
 # next-router-provider
 
+- [Install](#install)
+- [Why?](#why)
+- [Setup](#setup)
+- [Usage](#usage)
+  - [`Route`](#route)
+  - [RouteLink](#routelink)
+  - [`useRouter(): RouterHook`](#userouter-routerhook)
+    - [`RouterHook`](#routerhook)
+  - [`useQuery<T>(key: string): T`](#usequerytkey-string-t)
+  - [`usePrefetch(pathname: string): void`](#useprefetchpathname-string-void)
+
 Wrapper around the Next.js router that allows for mocking and makes it easier to use routes with parameters.
 
 - Easily mock the Next router in tests and in Storybook
@@ -31,6 +42,68 @@ function MyComponent() {
 yarn add next-router-provider
 ```
 
+## Why?
+
+The Next.js router isn't easy to mock in tests. There's no API for creating a mock router and there is no context provider you can use in tests to make the `useRouter` from `next/router` work.
+
+Navigating to routes with params means you need to pass in both the `Url` and `as` parameters into `router.push` and `router.replace`.
+
+```ts
+router.push(
+  {
+    pathname: '/posts/[id]',
+    query: {
+      id: '2',
+    },
+  },
+  {
+    pathname: '/posts/2',
+    query: {
+      id: '2',
+    },
+  }
+);
+```
+
+This library simplifies it down to:
+
+```ts
+pushRoute({
+  pathname: '/posts/[id]',
+  query: {
+    id: '10',
+  },
+});
+```
+
+Which makes it easier for you to build up helpers to generate routes:
+
+```ts
+import { postsRoute } from './lib/routes';
+
+pushRoute(postsRoute('2'));
+```
+
+Or using custom hooks to create links to routes:
+
+```ts
+function usePostsRoute(id: string) {
+  const { createLink } = useRouter();
+  return createLink({
+    pathname: '/posts/[id]',
+    query: {
+      id,
+    },
+  });
+}
+```
+
+```ts
+const { href, onClick } = usePostsRoute('2');
+```
+
+Which eliminates most of the need for `<Link>`.
+
 ## Setup
 
 You need to add the `<RouterProvider>` to your `pages/_app` file:
@@ -53,17 +126,6 @@ export default class NextApp extends App {
 ```
 
 ## Usage
-
-- [next-router-provider](#next-router-provider)
-  - [Install](#install)
-  - [Setup](#setup)
-  - [Usage](#usage)
-    - [`Route`](#route)
-    - [RouteLink](#routelink)
-    - [`useRouter(): RouterHook`](#userouter-routerhook)
-      - [`RouterHook`](#routerhook)
-    - [`useQuery<T>(key: string): T`](#usequerytkey-string-t)
-    - [`usePrefetch(pathname: string): void`](#useprefetchpathname-string-void)
 
 ### `Route`
 
