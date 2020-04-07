@@ -32,6 +32,7 @@ function MyComponent() {
 - [Why?](#why)
 - [Setup](#setup)
 - [Usage](#usage)
+- [API](#api)
   - [`Route`](#route)
   - [RouteLink](#routelink)
   - [`useRouter(): RouterHook`](#userouter-routerhook)
@@ -129,6 +130,14 @@ export default class NextApp extends App {
 ```
 
 ## Usage
+
+Once you've setup the provider you can use three hooks in your components:
+
+- `useRouter`: A replacement for the `useRouter` from `next/router`.
+- `useQuery`: Get a query/param from the URL.
+- `usePrefetch`: Prefetch the assets for a route.
+
+## API
 
 ### `Route`
 
