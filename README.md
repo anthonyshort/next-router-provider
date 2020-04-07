@@ -25,8 +25,9 @@ function MyComponent() {
 }
 ```
 
-# Table of contents
+## Table of contents
 
+- [Table of contents](#table-of-contents)
 - [Install](#install)
 - [Why?](#why)
 - [Setup](#setup)
