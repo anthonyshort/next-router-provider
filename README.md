@@ -37,6 +37,7 @@ function MyComponent() {
   - [`RouteLink`](#routelink)
   - [`useRouter(): RouterHook`](#userouter-routerhook)
     - [`RouterHook`](#routerhook)
+  - [`RouteOptions`](#routeoptions)
   - [`useQuery<T>(key: string): T`](#usequerytkey-string-t)
   - [`useRouteParam(key: string): string`](#userouteparamkey-string-string)
   - [`usePrefetch(route?: Route): void`](#useprefetchroute-route-void)
@@ -318,13 +319,28 @@ Access the Next.js from the `RouterProvider`. Returns `RouterHook`.
 #### `RouterHook`
 
 - `getQuery<T>(key: string): T`: Get a query parameter from the router
-- `pushRoute(route: Route): void`: Navigate to a `Route`.
+- `pushRoute(route: Route, options?: RouteOptions): void`: Navigate to a `Route`.
 - `router`: The Next.js router
-- `replaceRoute(route: Route): void`
-- `createLink(route: Route): RouteLink`: Takes a route and returns a `RouteLink`.
+- `replaceRoute(route: Route, options?: RouteOptions): void`
+- `createLink(route: Route, options?: RouteOptions): RouteLink`: Takes a route and returns a `RouteLink`.
 - `createHref(route: Route): string`: Takes a route object and returns a valid href.
-- `createClickHandler(route: Route): void`: Returns a click handler for a route that can be used on a link or anchor. This will respect clicks while holding modifier keys.
+- `createClickHandler(route: Route, options?: RouteOptions): void`: Returns a click handler for a route that can be used on a link or anchor. This will respect clicks while holding modifier keys.
 - `isRouteActive(pathname: string): boolean`: Returns true if the route is active.
+
+### `RouteOptions`
+
+Pass through options to `router.push` and `router.replace`. The only option is `shallow: boolean`.
+
+```ts
+pushRoute(
+  {
+    pathname: '/',
+  },
+  {
+    shallow: true,
+  }
+);
+```
 
 ### `useQuery<T>(key: string): T`
 
