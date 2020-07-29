@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { NextRouter } from 'next/router';
-import { Route } from './types';
+import { Route, RouteOptions } from './types';
 import { RouterContext } from './contexts/router';
 import {
   pushRoute,
@@ -13,8 +13,8 @@ import {
 
 export interface RouterHook {
   router: NextRouter;
-  pushRoute: (route: Route) => ReturnType<typeof pushRoute>;
-  replaceRoute: (route: Route) => ReturnType<typeof replaceRoute>;
+  pushRoute: (route: Route, options?: RouteOptions) => ReturnType<typeof pushRoute>;
+  replaceRoute: (route: Route, options?: RouteOptions) => ReturnType<typeof replaceRoute>;
   createLink: (route: Route) => ReturnType<typeof createLink>;
   createHref: (route: Route) => string;
   createClickHandler: (route: Route) => ReturnType<typeof createClickHandler>;
@@ -45,11 +45,11 @@ export function useRouter(): RouterHook {
     getQuery<T>(key: string): T {
       return getQuery<T>(router, key);
     },
-    pushRoute: (route: Route) => pushRoute(router, route),
-    replaceRoute: (route: Route) => replaceRoute(router, route),
-    createLink: (route: Route) => createLink(router, route),
+    pushRoute: (route: Route, options?: RouteOptions) => pushRoute(router, route, options),
+    replaceRoute: (route: Route, options?: RouteOptions) => replaceRoute(router, route, options),
+    createLink: (route: Route, options?: RouteOptions) => createLink(router, route, options),
     createHref: (route: Route) => routeToString(route),
-    createClickHandler: (route: Route) => createClickHandler(router, route),
+    createClickHandler: (route: Route, options?: RouteOptions) => createClickHandler(router, route, options),
     isRouteActive: (route: Route) => router.route.startsWith(route.pathname),
   };
 }
@@ -67,7 +67,7 @@ export function useQuery<T = string | undefined>(key: string): T {
  * Get a route parameter. This will throw if the route parameter doesn't exist.
  * @param key
  */
-export function useRouteParam(key: string): string {
+export function useRouteParam<T = string>(key: string): T {
   const { router } = useRouter();
   const params = findParams(router.route);
   if (!params.includes(key)) {

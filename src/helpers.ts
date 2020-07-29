@@ -1,6 +1,6 @@
 import url from 'url';
 import { NextRouter } from 'next/router';
-import { Query, Route, CreateMockRouterOptions } from './types';
+import { Query, Route, CreateMockRouterOptions, RouteOptions } from './types';
 import { EventEmitter } from 'events';
 
 const noop = (): void => undefined;
@@ -87,9 +87,10 @@ export function replaceParams(str: string, params?: Query): string {
  */
 export async function pushRoute(
   router: NextRouter,
-  route: Route
+  route: Route,
+  options?: RouteOptions,
 ): Promise<boolean> {
-  return navigate(router, route, 'push');
+  return navigate(router, route, 'push', options);
 }
 
 /**
@@ -109,9 +110,10 @@ export async function pushRoute(
  */
 export async function replaceRoute(
   router: NextRouter,
-  route: Route
+  route: Route,
+  options?: RouteOptions,
 ): Promise<boolean> {
-  return navigate(router, route, 'replace');
+  return navigate(router, route, 'replace', options);
 }
 
 /**
@@ -120,11 +122,12 @@ export async function replaceRoute(
 async function navigate(
   router: NextRouter,
   route: Route,
-  type: 'push' | 'replace'
+  type: 'push' | 'replace',
+  options?: RouteOptions
 ): Promise<boolean> {
   const { pathname, query } = route;
   const queryWithoutParams = omit(query || {}, findParams(pathname));
-  const shouldScroll = pathname.indexOf('#') < 0;
+  const shouldScroll = pathname.indexOf('#') > -1;
   const success = await router[type](
     {
       pathname,
@@ -133,7 +136,8 @@ async function navigate(
     {
       pathname: replaceParams(pathname, query),
       query: queryWithoutParams,
-    }
+    },
+    options
   );
   if (success && shouldScroll) {
     window.scrollTo(0, 0);
@@ -189,12 +193,13 @@ export type ClickHandler = (
 
 export function createClickHandler(
   router: NextRouter,
-  route: Route
+  route: Route,
+  options?: RouteOptions,
 ): ClickHandler {
   return (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     if (wantsNewTab(e)) return;
     e.preventDefault();
-    pushRoute(router, route);
+    pushRoute(router, route, options);
   };
 }
 
@@ -205,7 +210,8 @@ export function createClickHandler(
  */
 export function createLink(
   router: NextRouter,
-  route: Route
+  route: Route,
+  options?: RouteOptions,
 ): {
   isActive: boolean;
   push: () => ReturnType<typeof pushRoute>;
@@ -215,8 +221,8 @@ export function createLink(
 } {
   return {
     isActive: router.route.startsWith(route.pathname),
-    push: () => pushRoute(router, route),
-    replace: () => replaceRoute(router, route),
+    push: () => pushRoute(router, route, options),
+    replace: () => replaceRoute(router, route, options),
     onClick: createClickHandler(router, route),
     href: routeToString(route),
   };

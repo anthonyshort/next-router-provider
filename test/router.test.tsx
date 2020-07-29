@@ -38,12 +38,12 @@ describe('Next router helpers', () => {
   });
 
   describe('pushRoute', () => {
-    it('should call router push', () => {
+    it('should call router push', async () => {
       const router = createMockRouter({
         pathname: '/',
       });
       const spy = jest.spyOn(router, 'push');
-      pushRoute(router, {
+      await pushRoute(router, {
         pathname: '/admin/producer-dashboard/[uuid]',
         query: {
           uuid: '1',
@@ -64,7 +64,8 @@ describe('Next router helpers', () => {
           query: {
             tab: 'requests',
           },
-        }
+        },
+        undefined
       );
     });
   });

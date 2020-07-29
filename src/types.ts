@@ -24,3 +24,7 @@ export interface CreateMockRouterOptions {
   asPath?: string;
   query?: Record<string, string>;
 }
+
+export interface RouteOptions {
+  shallow?: boolean;
+}
