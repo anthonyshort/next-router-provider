@@ -43,13 +43,19 @@ describe('Next router helpers', () => {
         pathname: '/',
       });
       const spy = jest.spyOn(router, 'push');
-      await pushRoute(router, {
-        pathname: '/admin/producer-dashboard/[uuid]',
-        query: {
-          uuid: '1',
-          tab: 'requests',
+      await pushRoute(
+        router,
+        {
+          pathname: '/admin/producer-dashboard/[uuid]',
+          query: {
+            uuid: '1',
+            tab: 'requests',
+          },
         },
-      });
+        {
+          shallow: true,
+        }
+      );
       expect(spy).toHaveBeenCalled();
       expect(spy).toHaveBeenLastCalledWith(
         {
@@ -65,7 +71,9 @@ describe('Next router helpers', () => {
             tab: 'requests',
           },
         },
-        undefined
+        {
+          shallow: true,
+        }
       );
     });
   });

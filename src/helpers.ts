@@ -88,7 +88,7 @@ export function replaceParams(str: string, params?: Query): string {
 export async function pushRoute(
   router: NextRouter,
   route: Route,
-  options?: RouteOptions,
+  options?: RouteOptions
 ): Promise<boolean> {
   return navigate(router, route, 'push', options);
 }
@@ -111,7 +111,7 @@ export async function pushRoute(
 export async function replaceRoute(
   router: NextRouter,
   route: Route,
-  options?: RouteOptions,
+  options?: RouteOptions
 ): Promise<boolean> {
   return navigate(router, route, 'replace', options);
 }
@@ -194,7 +194,7 @@ export type ClickHandler = (
 export function createClickHandler(
   router: NextRouter,
   route: Route,
-  options?: RouteOptions,
+  options?: RouteOptions
 ): ClickHandler {
   return (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     if (wantsNewTab(e)) return;
@@ -211,7 +211,7 @@ export function createClickHandler(
 export function createLink(
   router: NextRouter,
   route: Route,
-  options?: RouteOptions,
+  options?: RouteOptions
 ): {
   isActive: boolean;
   push: () => ReturnType<typeof pushRoute>;

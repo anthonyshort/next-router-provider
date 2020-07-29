@@ -13,8 +13,14 @@ import {
 
 export interface RouterHook {
   router: NextRouter;
-  pushRoute: (route: Route, options?: RouteOptions) => ReturnType<typeof pushRoute>;
-  replaceRoute: (route: Route, options?: RouteOptions) => ReturnType<typeof replaceRoute>;
+  pushRoute: (
+    route: Route,
+    options?: RouteOptions
+  ) => ReturnType<typeof pushRoute>;
+  replaceRoute: (
+    route: Route,
+    options?: RouteOptions
+  ) => ReturnType<typeof replaceRoute>;
   createLink: (route: Route) => ReturnType<typeof createLink>;
   createHref: (route: Route) => string;
   createClickHandler: (route: Route) => ReturnType<typeof createClickHandler>;
@@ -45,11 +51,15 @@ export function useRouter(): RouterHook {
     getQuery<T>(key: string): T {
       return getQuery<T>(router, key);
     },
-    pushRoute: (route: Route, options?: RouteOptions) => pushRoute(router, route, options),
-    replaceRoute: (route: Route, options?: RouteOptions) => replaceRoute(router, route, options),
-    createLink: (route: Route, options?: RouteOptions) => createLink(router, route, options),
+    pushRoute: (route: Route, options?: RouteOptions) =>
+      pushRoute(router, route, options),
+    replaceRoute: (route: Route, options?: RouteOptions) =>
+      replaceRoute(router, route, options),
+    createLink: (route: Route, options?: RouteOptions) =>
+      createLink(router, route, options),
     createHref: (route: Route) => routeToString(route),
-    createClickHandler: (route: Route, options?: RouteOptions) => createClickHandler(router, route, options),
+    createClickHandler: (route: Route, options?: RouteOptions) =>
+      createClickHandler(router, route, options),
     isRouteActive: (route: Route) => router.route.startsWith(route.pathname),
   };
 }
@@ -71,7 +81,9 @@ export function useRouteParam<T = string>(key: string): T {
   const { router } = useRouter();
   const params = findParams(router.route);
   if (!params.includes(key)) {
-    throw new Error(`The current page route does not contain the parameter "${key}". Did you mispell it?`);
+    throw new Error(
+      `The current page route does not contain the parameter "${key}". Did you mispell it?`
+    );
   }
   const value = getQuery<T | undefined>(router, key);
   if (!value) {
