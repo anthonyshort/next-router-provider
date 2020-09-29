@@ -57,7 +57,7 @@ export function useRouter(): RouterHook {
       replaceRoute(router, route, options),
     createLink: (route: Route, options?: RouteOptions) =>
       createLink(router, route, options),
-    createHref: (route: Route) => routeToString(route),
+    createHref: (route: Route) => routeToString(router, route),
     createClickHandler: (route: Route, options?: RouteOptions) =>
       createClickHandler(router, route, options),
     isRouteActive: (route: Route) => router.route.startsWith(route.pathname),

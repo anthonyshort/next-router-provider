@@ -151,10 +151,12 @@ async function navigate(
  * This will also replace any params, like [:id], within the string
  * @param route The route to transform into a string
  */
-export function routeToString(route: Route): string {
+export function routeToString(router: Pick<NextRouter, 'basePath'>, route: Route): string {
   const { pathname, query = {} } = route;
+  const { basePath = '' } = router;
+
   return url.format({
-    pathname: replaceParams(pathname, query),
+    pathname: `${basePath}${replaceParams(pathname, query)}`,
     query: removeParams(pathname, query),
   });
 }
@@ -224,7 +226,7 @@ export function createLink(
     push: () => pushRoute(router, route, options),
     replace: () => replaceRoute(router, route, options),
     onClick: createClickHandler(router, route),
-    href: routeToString(route),
+    href: routeToString(router, route),
   };
 }
 
@@ -247,13 +249,14 @@ export function createLink(
  * @param options
  */
 export function createMockRouter(options: CreateMockRouterOptions): NextRouter {
-  const { pathname, query = {} } = options;
+  const { pathname, query = {}, basePath = '' } = options;
 
   return {
     pathname,
     isFallback: false,
+    basePath,
     query,
-    asPath: routeToString({
+    asPath: routeToString({ basePath: '' }, {
       pathname,
       query,
     }),

@@ -3,6 +3,7 @@ import {
   replaceParams,
   pushRoute,
   findParams,
+  routeToString,
 } from '../src/helpers';
 
 describe('Next router helpers', () => {
@@ -34,6 +35,28 @@ describe('Next router helpers', () => {
         unused: '2',
       });
       expect(result).toBe('/admin/producer-dashboard/[page]/1');
+    });
+  });
+
+  describe('routeToString', () => {
+    it('should use the basePath', () => {
+      const router = createMockRouter({
+        pathname: '/',
+        basePath: '/foo'
+      });
+      const href = routeToString(router, {
+        pathname: '/bar'
+      })
+      expect(href).toBe('/foo/bar');
+    });
+    it('should NOT use the basePath', () => {
+      const router = createMockRouter({
+        pathname: '/',
+      });
+      const href = routeToString(router, {
+        pathname: '/bar'
+      })
+      expect(href).toBe('/bar');
     });
   });
 

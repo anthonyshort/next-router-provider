@@ -23,6 +23,7 @@ export interface CreateMockRouterOptions {
   pathname: string;
   asPath?: string;
   query?: Record<string, string>;
+  basePath?: string;
 }
 
 export interface RouteOptions {
