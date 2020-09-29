@@ -151,7 +151,10 @@ async function navigate(
  * This will also replace any params, like [:id], within the string
  * @param route The route to transform into a string
  */
-export function routeToString(router: Pick<NextRouter, 'basePath'>, route: Route): string {
+export function routeToString(
+  router: Pick<NextRouter, 'basePath'>,
+  route: Route
+): string {
   const { pathname, query = {} } = route;
   const { basePath = '' } = router;
 
@@ -256,10 +259,13 @@ export function createMockRouter(options: CreateMockRouterOptions): NextRouter {
     isFallback: false,
     basePath,
     query,
-    asPath: routeToString({ basePath: '' }, {
-      pathname,
-      query,
-    }),
+    asPath: routeToString(
+      { basePath: '' },
+      {
+        pathname,
+        query,
+      }
+    ),
     route: pathname,
     back: noop,
     beforePopState: noop,

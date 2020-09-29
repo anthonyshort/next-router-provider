@@ -42,11 +42,11 @@ describe('Next router helpers', () => {
     it('should use the basePath', () => {
       const router = createMockRouter({
         pathname: '/',
-        basePath: '/foo'
+        basePath: '/foo',
       });
       const href = routeToString(router, {
-        pathname: '/bar'
-      })
+        pathname: '/bar',
+      });
       expect(href).toBe('/foo/bar');
     });
     it('should NOT use the basePath', () => {
@@ -54,8 +54,8 @@ describe('Next router helpers', () => {
         pathname: '/',
       });
       const href = routeToString(router, {
-        pathname: '/bar'
-      })
+        pathname: '/bar',
+      });
       expect(href).toBe('/bar');
     });
   });
