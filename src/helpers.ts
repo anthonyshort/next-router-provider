@@ -192,9 +192,7 @@ export function wantsNewTab(e: any): boolean {
   return false;
 }
 
-export type ClickHandler = (
-  e: React.MouseEvent<Element, MouseEvent>
-) => void;
+export type ClickHandler = (e: React.MouseEvent<Element, MouseEvent>) => void;
 
 export function createClickHandler(
   router: NextRouter,
