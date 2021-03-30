@@ -1,6 +1,13 @@
 import url from 'url';
 import { NextRouter } from 'next/router';
-import { Query, Route, CreateMockRouterOptions, RouteOptions } from './types';
+import {
+  Query,
+  Route,
+  CreateMockRouterOptions,
+  RouteOptions,
+  ClickHandler,
+  Link,
+} from './types';
 import { EventEmitter } from 'events';
 
 const noop = (): void => undefined;
@@ -192,8 +199,6 @@ export function wantsNewTab(e: any): boolean {
   return false;
 }
 
-export type ClickHandler = (e: React.MouseEvent<Element, MouseEvent>) => void;
-
 export function createClickHandler(
   router: NextRouter,
   route: Route,
@@ -215,13 +220,7 @@ export function createLink(
   router: NextRouter,
   route: Route,
   options?: RouteOptions
-): {
-  isActive: boolean;
-  push: () => ReturnType<typeof pushRoute>;
-  replace: () => ReturnType<typeof replaceRoute>;
-  onClick: ClickHandler;
-  href: string;
-} {
+): Link {
   return {
     isActive: router.route.startsWith(route.pathname),
     push: () => pushRoute(router, route, options),

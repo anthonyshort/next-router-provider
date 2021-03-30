@@ -29,3 +29,13 @@ export interface CreateMockRouterOptions {
 export interface RouteOptions {
   shallow?: boolean;
 }
+
+export type ClickHandler = (e: React.MouseEvent<Element, MouseEvent>) => void;
+
+export interface Link {
+  isActive: boolean;
+  push: () => Promise<boolean>;
+  replace: () => Promise<boolean>;
+  onClick: ClickHandler;
+  href: string;
+}
