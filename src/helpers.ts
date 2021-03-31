@@ -222,7 +222,8 @@ export function createLink(
   options?: RouteOptions
 ): Link {
   return {
-    isActive: router.route.startsWith(route.pathname),
+    route,
+    isActive: router.route === route.pathname,
     push: () => pushRoute(router, route, options),
     replace: () => replaceRoute(router, route, options),
     onClick: createClickHandler(router, route),

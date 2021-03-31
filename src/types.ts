@@ -33,6 +33,7 @@ export interface RouteOptions {
 export type ClickHandler = (e: React.MouseEvent<Element, MouseEvent>) => void;
 
 export interface Link {
+  route: Route;
   isActive: boolean;
   push: () => Promise<boolean>;
   replace: () => Promise<boolean>;
